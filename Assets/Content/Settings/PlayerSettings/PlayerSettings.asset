@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb32431c51ec2894bb91580d5dd7a781, type: 3}
   m_Name: PlayerSettings
   m_EditorClassIdentifier: 
-  MovementSpeed: 200
+  MovementSpeed: 175
   MaxWalkingSlope: 50
   VariableSpeedInput: 1
   JumpHeight: 1
-  SpeedInJump: 105
+  SpeedInJump: 2
   CrouchHeight: 1.125
+  crouchSpeed: 100
   MaxViewingAngle: 75
   MaxHealth: 150
   HealthRechargeRate: 10

@@ -7,9 +7,9 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public KeybindingManager keybinds;
-
-    float distToGround;
+    Camera Cam;
     
+
     private Vector3 moveDir = Vector3.zero;
     private bool queueJump = false;
     [HideInInspector]
@@ -18,6 +18,14 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 lookAxis = Vector2.zero;
     [HideInInspector]
     public bool inJump = false;
+    public bool isCrouch = false;
+    public bool Sprinting = false;
+    public bool isGrounded;
+    public Vector3 jump;
+
+    //Movement Variables
+    [HideInInspector]
+    public float MovementSpeed;
 
     /** Component accessors **/
     public PlayerSettings Settings
@@ -39,40 +47,84 @@ public class PlayerMovement : MonoBehaviour
 
     public void Start()
     {
-        distToGround = cc.bounds.extents.y;
+        MovementSpeed = Settings.MovementSpeed;
+        jump = new Vector3(0.0f, 2.0f, 0.0f);
+        Cam = GetComponentInChildren<Camera>();
+    }
+
+    public void Update()
+    {
+        //JUMP
+        if (Input.GetKeyDown(keybinds.JumpKey) && !inJump)
+        {
+            Jump();
+        }
+        //CROUCH
+        if (Input.GetKeyDown (keybinds.Crouch))
+        {
+            crouch();
+        } 
+        //SPRINT
+        if (Input.GetKeyDown(keybinds.Sprint) && !isCrouch)
+        {
+            MovementSpeed = Settings.MovementSpeed + 50.0f;
+            Cam.fieldOfView += 10;
+            Sprinting = true;
+        } else if (Input.GetKeyUp(keybinds.Sprint))
+        {
+            Cam.fieldOfView -= 10;
+            MovementSpeed = Settings.MovementSpeed;
+            Sprinting = false;
+        }
     }
 
     public void FixedUpdate()
     {
-        move();
+        if (!inJump)
+        {
+            move();
+        }
     }
 
     public void move()
     {
+        //TODO: Update to use custom Keybinds
         float horizontalMovement = Input.GetAxisRaw("Horizontal");
         float verticalMovement = Input.GetAxisRaw("Vertical");
 
         moveDir = (horizontalMovement * transform.right + verticalMovement * transform.forward).normalized;
 
         Vector3 yVelFix = new Vector3(0, rb.velocity.y, 0);
-        rb.velocity = moveDir * Settings.MovementSpeed * Time.deltaTime;
+        rb.velocity = moveDir * MovementSpeed * Time.deltaTime;
         rb.velocity += yVelFix;
     }
-    public void Jump ()
+    private void OnCollisionStay(Collision collision)
     {
-        if (isGrounded())
-        {
-            if (Input.GetKeyDown(keybinds.JumpKey))
-            {
-                rb.AddForce(Vector3.up * Settings.SpeedInJump);
-            }
-        }
-
+        isGrounded = true;
+        inJump = false;
+    }
+    public void Jump()
+    {
+        inJump = true;
+        isGrounded = false;
+        rb.AddForce(jump * Settings.SpeedInJump, ForceMode.Impulse);
+        
     }
 
-    public bool isGrounded ()
+    public void crouch()
     {
-        return Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.1f);
+        if (!isCrouch)
+        {
+            MovementSpeed = Settings.crouchSpeed;
+            cc.height = cc.height / 2;
+            isCrouch = true;
+        } 
+        else if (isCrouch)
+        {
+            MovementSpeed = Settings.MovementSpeed;
+            cc.height = cc.height * 2;
+            isCrouch = false;
+        }
     }
 
 }

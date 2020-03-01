@@ -16,6 +16,7 @@ public class PlayerSettings : ScriptableObject
 
     [Header("Crouch")]
     public float CrouchHeight;
+    public float crouchSpeed;
 
     [Header("Camera")]
     public float MaxViewingAngle;
