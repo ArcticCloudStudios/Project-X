@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Arctic.Keybinds;
 
 public enum InputMode { Keyboard, Gamepad }
 
