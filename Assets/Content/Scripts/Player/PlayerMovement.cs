@@ -63,14 +63,14 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown (keybinds.Crouch))
         {
             crouch();
-        } 
+        }
         //SPRINT
-        if (Input.GetKeyDown(keybinds.Sprint) && !isCrouch)
+        if (Input.GetKeyDown(keybinds.Sprint) && !isCrouch && !Sprinting)
         {
             MovementSpeed = Settings.MovementSpeed + 50.0f;
             Cam.fieldOfView += 10;
             Sprinting = true;
-        } else if (Input.GetKeyUp(keybinds.Sprint))
+        } else if (Input.GetKeyUp(keybinds.Sprint) && Sprinting)
         {
             Cam.fieldOfView -= 10;
             MovementSpeed = Settings.MovementSpeed;
