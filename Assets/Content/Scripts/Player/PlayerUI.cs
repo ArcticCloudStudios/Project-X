@@ -9,5 +9,8 @@ public class PlayerUI : MonoBehaviour
     public Slider HealthSlider;
     [Header("Stamina")]
     public Slider StaminaSlider;
+    [Header("Text")]
+    public Text InteractText;
+    public GameObject InteractTextObj;
     
 }

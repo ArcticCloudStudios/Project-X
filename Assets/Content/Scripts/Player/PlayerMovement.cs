@@ -9,7 +9,8 @@ public class PlayerMovement : MonoBehaviour
 {
     public KeybindingManager keybinds;
     Camera Cam;
-    
+    public bool canMove = true;
+    float StartFOV;
 
     private Vector3 moveDir = Vector3.zero;
     private bool queueJump = false;
@@ -48,9 +49,11 @@ public class PlayerMovement : MonoBehaviour
 
     public void Start()
     {
+       
         MovementSpeed = Settings.MovementSpeed;
         jump = new Vector3(0.0f, 2.0f, 0.0f);
         Cam = GetComponentInChildren<Camera>();
+        StartFOV = Cam.fieldOfView;
     }
 
     public void Update()
@@ -69,19 +72,33 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(keybinds.Sprint) && !isCrouch && !Sprinting)
         {
             MovementSpeed = Settings.MovementSpeed + 50.0f;
-            Cam.fieldOfView += 10;
+            
             Sprinting = true;
         } else if (Input.GetKeyUp(keybinds.Sprint) && Sprinting)
         {
-            Cam.fieldOfView -= 10;
+           
             MovementSpeed = Settings.MovementSpeed;
             Sprinting = false;
+        }
+
+        if (Sprinting && Cam.fieldOfView <= StartFOV + 10)
+        {
+            Cam.fieldOfView += 10 * Time.deltaTime;
+        }
+        else if (!Sprinting)
+        {
+            if (Cam.fieldOfView >= StartFOV)
+            {
+                Cam.fieldOfView -= 10 * Time.deltaTime;
+                
+            }
+            
         }
     }
 
     public void FixedUpdate()
     {
-        if (!inJump)
+        if (!inJump && canMove)
         {
             move();
         }

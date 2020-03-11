@@ -23,6 +23,7 @@ namespace Arctic.Keybinds
         public KeyCode PauseKey;
         public KeyCode InventoryKey;
         public KeyCode _DevMode;
+        public KeyCode Interact;
 
         public void Start()
         {
@@ -68,14 +69,17 @@ namespace Arctic.Keybinds
             _DevMode = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("devmodePrefs"));
             SelectKey(Dropdowns[7], _DevMode.ToString());
 
+            Interact = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("interactPrefs"));
+            SelectKey(Dropdowns[8], Interact.ToString());
+
             Fire = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("firePrefs"));
-            SelectKey(Dropdowns[19], Fire.ToString());
+            SelectKey(Dropdowns[9], Fire.ToString());
 
             Aim = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("aimPrefs"));
-            SelectKey(Dropdowns[8], Aim.ToString());
+            SelectKey(Dropdowns[10], Aim.ToString());
 
             PauseKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("pausePrefs"));
-            SelectKey(Dropdowns[9], PauseKey.ToString());
+            SelectKey(Dropdowns[11], PauseKey.ToString());
 
             InventoryKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("inventoryPrefs"));
             SelectKey(Dropdowns[10], InventoryKey.ToString());
@@ -100,6 +104,11 @@ namespace Arctic.Keybinds
         {
             JumpKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), keys[id]);
             PlayerPrefs.SetString("jumpPrefs", keys[id]);
+        }
+        public void ChangeInteractKey(int id)
+        {
+            Interact = (KeyCode)System.Enum.Parse(typeof(KeyCode), keys[id]);
+            PlayerPrefs.SetString("interactPrefs", keys[id]);
         }
         public void ChangeWalkFKey(int id)
         {
