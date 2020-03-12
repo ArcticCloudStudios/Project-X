@@ -16,6 +16,7 @@ public class Wheel : MonoBehaviour
     public int curRotationLeft;
     public int maxRotations;
     public int degree;
+    public float d;
 
     [Header("GameObjects")]
     public GameObject Ship;
@@ -35,6 +36,14 @@ public class Wheel : MonoBehaviour
 
     }
 
+    public void FixedUpdate()
+    {
+        if (isPlayerUsing)
+        {
+            Control();
+        }
+    }
+
     public void Update()
     {
         if (degree >= 14250)
@@ -42,11 +51,7 @@ public class Wheel : MonoBehaviour
             degree = 14250;
         }
 
-        if (isPlayerUsing)
-        {
-            Control();
-            
-        }
+
 
         if (isTurningright && !isTurningleft)
         {
@@ -60,46 +65,40 @@ public class Wheel : MonoBehaviour
 
     public void Control()
     {
-        if (Input.GetKey(key.WalkRight) && en.isOn)
+        //When Wheel is rotating right on z axis
+        if (Input.GetKey(key.WalkRight) && en.isOn && curRotationRight < 3)
         {
             if (isTurningleft && shipturnSpeed > 0)
             {
                 transform.Rotate(Vector3.forward * (turnSpeed * Time.deltaTime));
+                Debug.Log(this.transform.eulerAngles.z);
                 shipturnSpeed -= Time.deltaTime * shipturnSpeedInc;
-            } else
+
+            }
+            else
             {
                 isTurningleft = false;
                 isTurningright = true;
                 transform.Rotate(Vector3.forward * (turnSpeed * Time.deltaTime));
+                Debug.Log(this.transform.eulerAngles.z);
                 shipturnSpeed += Time.deltaTime * shipturnSpeedInc;
-                if (degree <= 14250)
-                {
-                    degree++;
-                }
 
-                if (degree >= 4750)
+                /*if (this.transform.eulerAngles.z == 359)
                 {
-                    curRotationRight = 1;
-                }
-                if (degree >= 9500)
-                {
-                    curRotationRight = 2;
-                }
-                if (degree >= 14250)
-                {
-                    curRotationRight = 3;
-                }
+                    curRotationRight++;
+                }*/
+
+
             }
-
-            
-
-        } 
+        }
+        //When Wheel is rotating left on z axis
         if (Input.GetKey(key.WalkLeft) && en.isOn)
         {
             if (isTurningright && shipturnSpeed > 0)
             {
                 transform.Rotate(Vector3.back * (turnSpeed * Time.deltaTime));
                 shipturnSpeed -= Time.deltaTime * shipturnSpeedInc;
+                
             }
             else
             {
@@ -107,43 +106,10 @@ public class Wheel : MonoBehaviour
                 isTurningleft = true;
                 transform.Rotate(Vector3.back * (turnSpeed * Time.deltaTime));
                 shipturnSpeed += Time.deltaTime * shipturnSpeedInc;
-                if (degree >= -14250)
-                {
-                    degree--;
-                }
-                //Coming by right turns
-                if (degree == 4750)
-                {
-                    curRotationRight = 1;
-                }
-                if (degree == 9500)
-                {
-                    curRotationRight = 2;
-                }
-                if (degree == 14250)
-                {
-                    curRotationRight = 3;
-                }
-                //Actual Left Turn
-                if (degree <= -4750)
-                {
-                    curRotationLeft = 1;
-                }
-                if (degree <= -9500)
-                {
-                    curRotationLeft = 2;
-                }
-                if (degree <= -14250)
-                {
-                    curRotationLeft = 3;
-                }
-            }
-            
 
+            }
         }
 
-        
-    }
-
-   
+    }     
 }
+

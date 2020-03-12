@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Arctic.Keybinds;
 
 public class ShipStats : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class ShipStats : MonoBehaviour
     public Wheel W;
     public Player P;
     public Engine En;
+    public KeybindingManager KM;
 
     [Header("Vitals")]
     public float CurHealth;
@@ -24,6 +26,7 @@ public class ShipStats : MonoBehaviour
         W = GameObject.Find("Wheel").GetComponent<Wheel>();
         P = GameObject.Find("Player").GetComponent<Player>();
         En = GameObject.Find("Engine").GetComponent<Engine>();
+        KM = GameObject.Find("InputManager").GetComponent<KeybindingManager>();
 
         CurHealth = SS.ShipMaxHealth;
         
@@ -31,28 +34,51 @@ public class ShipStats : MonoBehaviour
 
     public void Update()
     {
-        MoveShip();
+        if (W.isPlayerUsing)
+        {
+            MoveShip();
+        }
     }
+
+        
 
     
 
     public void MoveShip ()
     {
-        
 
         if (En.isOn)
         {
-            if (curSpeed <= SS.maxSpeed)
+            if (Input.GetKey(KM.WalkForward))
             {
-                curSpeed += Time.deltaTime * speedInc;
+                if (curSpeed <= SS.maxSpeed)
+                {
+                    curSpeed += Time.deltaTime * speedInc;
+                }
+
+                if (curSpeed >= SS.maxSpeed)
+                {
+                    curSpeed = SS.maxSpeed;
+                }
+               
             }
-       
-            if (curSpeed >= SS.maxSpeed)
+            if (Input.GetKey(KM.WalkBackward))
             {
-                curSpeed = SS.maxSpeed;
+                if (curSpeed >= 0)
+                {
+                    curSpeed -= Time.deltaTime * speedInc;
+                }
+
+                if (curSpeed <= 0)
+                {
+                    curSpeed = 0;
+                }
+               
             }
+
             gameObject.transform.position += (transform.forward * -0.1f) * Time.deltaTime * curSpeed;
-           
+
+
         }
     }
 }

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Ship01
   m_EditorClassIdentifier: 
   ShipMaxHealth: 250
-  maxSpeed: 5
+  maxSpeed: 25
   ShipWeight: 100
