@@ -34,10 +34,9 @@ public class ShipStats : MonoBehaviour
 
     public void Update()
     {
-        if (W.isPlayerUsing)
-        {
-            MoveShip();
-        }
+        
+       MoveShip();
+        
     }
 
         
@@ -49,7 +48,7 @@ public class ShipStats : MonoBehaviour
 
         if (En.isOn)
         {
-            if (Input.GetKey(KM.WalkForward))
+            if (Input.GetKey(KM.WalkForward) && W.isPlayerUsing)
             {
                 if (curSpeed <= SS.maxSpeed)
                 {
@@ -62,7 +61,7 @@ public class ShipStats : MonoBehaviour
                 }
                
             }
-            if (Input.GetKey(KM.WalkBackward))
+            if (Input.GetKey(KM.WalkBackward) && W.isPlayerUsing)
             {
                 if (curSpeed >= 0)
                 {

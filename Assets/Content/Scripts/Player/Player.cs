@@ -126,6 +126,14 @@ public class Player : MonoBehaviour
 
         }
 
+        if (other.gameObject.tag == "Ladder")
+        {
+            Ladder Ladder = other.gameObject.GetComponent<Ladder>();
+            PUI.InteractText.text = "Press " + Key.Interact.ToString() + " To Climb";
+            Ladder.PlayerPressed = true;
+            Ladder.canClimb = true;
+        }
+
         if (other.gameObject.tag == "Engine")
         {
             IsEngine = true;
@@ -143,6 +151,11 @@ public class Player : MonoBehaviour
 
     public void OnTriggerExit(Collider other)
     {
+        Ladder Ladder = other.gameObject.GetComponent<Ladder>();
+        if (other.gameObject.tag == "Ladder")
+        {
+            Ladder.PlayerPressed = false;
+        }
         PUI.InteractTextObj.SetActive(false);
         PUI.InteractText.text = "";
         if (other.transform.transform.tag == "Ship")
