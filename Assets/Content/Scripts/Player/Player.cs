@@ -9,7 +9,8 @@ public class Player : MonoBehaviour
     public KeybindingManager Key;
     public PlayerUI PUI;
     MouseLook ML;
-    GameObject cam;
+    [HideInInspector]
+    public GameObject cam;
 
     [Header("Vitals")]
     public float _health; //Current Health
