@@ -26,6 +26,10 @@ public class Player : MonoBehaviour
     [HideInInspector]
     public bool InUse;
 
+    float XPos;
+    float YPos;
+    float ZPos;
+
     public void Start()
     {
         LoadPrefs();
@@ -39,6 +43,7 @@ public class Player : MonoBehaviour
         PUI.HealthSlider.value = _health;
         PUI.StaminaSlider.maxValue = settings.MaxStamina;
         PUI.StaminaSlider.value = _stamina;
+        transform.position = new Vector3(XPos, YPos, ZPos);
     }
 
     public void Update()
@@ -171,13 +176,19 @@ public class Player : MonoBehaviour
      {
          _health = PlayerPrefs.GetFloat("health", settings.MaxHealth);
          _stamina = PlayerPrefs.GetFloat("stamina", settings.MaxStamina);
-     }
+         XPos = PlayerPrefs.GetFloat("PosX", 0);
+         YPos = PlayerPrefs.GetFloat("PosY", 0.741f);
+         ZPos = PlayerPrefs.GetFloat("PosZ", -6.51f);
+    }
 
      public void SavePrefs()
      {
          PlayerPrefs.SetFloat("health", _health);
          PlayerPrefs.SetFloat("stamina", _stamina);
-         PlayerPrefs.Save();
+         PlayerPrefs.SetFloat("PosX", gameObject.transform.position.x);
+         PlayerPrefs.SetFloat("PosY", gameObject.transform.position.y);
+         PlayerPrefs.SetFloat("PosZ", gameObject.transform.position.z);
+        PlayerPrefs.Save();
      }
 
 
