@@ -30,14 +30,22 @@ public class Player : MonoBehaviour
     float YPos;
     float ZPos;
 
+    public bool Reset;
+
     public void Start()
     {
+        
         LoadPrefs();
         Key = GameObject.Find("InputManager").GetComponent<KeybindingManager>();
         movement = GetComponent<PlayerMovement>();
         PUI = GetComponent<PlayerUI>();
         cam = GameObject.Find("Main Camera");
         ML = cam.GetComponent<MouseLook>();
+
+        if (Reset)
+        {
+            ResetPos();
+        }
 
         PUI.HealthSlider.maxValue = settings.MaxHealth;
         PUI.HealthSlider.value = _health;
@@ -190,6 +198,16 @@ public class Player : MonoBehaviour
          PlayerPrefs.SetFloat("PosZ", gameObject.transform.position.z);
         PlayerPrefs.Save();
      }
+
+    public void ResetPos()
+    {
+        XPos = 0;
+        YPos = 0.741f;
+        ZPos = -6.51f;
+        PlayerPrefs.SetFloat("PosX", gameObject.transform.position.x);
+        PlayerPrefs.SetFloat("PosY", gameObject.transform.position.y);
+        PlayerPrefs.SetFloat("PosZ", gameObject.transform.position.z);
+    }
 
 
  }
